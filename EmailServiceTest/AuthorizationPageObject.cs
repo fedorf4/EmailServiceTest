@@ -11,9 +11,6 @@ namespace EmailServiceTest
     {
         private IWebDriver _webDriver;
 
-        private readonly By _dropdownAccountsButton = By.XPath("//*[@id=\"ph-whiteline\"]/div/div[2]/div[2]/span[3]");
-        private readonly By _addAccountButton = By.XPath("//div[text()='Добавить аккаунт']");
-
         private readonly By _loginInput = By.XPath("//input[@name='username']");
         private readonly By _toEnterPasswordButton = By.XPath("//button[@data-test-id='next-button']");
         private readonly By _passwordInput = By.XPath("//input[@name='password']");
@@ -26,10 +23,6 @@ namespace EmailServiceTest
 
         public void Authorize(string login, string password)
         {
-            Thread.Sleep(2000);
-            _webDriver.FindElement(_dropdownAccountsButton).Click();
-            Thread.Sleep(2000);
-            _webDriver.FindElement(_addAccountButton).Click();
             Thread.Sleep(2000);
             _webDriver.FindElement(_loginInput).SendKeys(login);
             Thread.Sleep(2000);
