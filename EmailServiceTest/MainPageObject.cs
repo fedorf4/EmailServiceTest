@@ -12,38 +12,25 @@ namespace EmailServiceTest
         private IWebDriver _webDriver;
 
         private readonly By _composeEmailButton = By.XPath("//a[@href='/compose/']");
-        private readonly By _addressToInput = By.XPath("//div[@data-type='to']");
-        private readonly By _subjectInput = By.XPath("//input[@name='Subject']");
-        private readonly By _emailEditor = By.XPath("//div[@role='textbox']");
 
         public MainPageObject(IWebDriver webDriver)
         {
             _webDriver = webDriver;
         }
 
-        public MainPageObject StartComposeEmail()
+        public ComposePageObject StartComposeEmail()
         {
+            Thread.Sleep(1000); // need to close pop-up window
+            WaitHelper.WaitElement(_webDriver, _composeEmailButton);
             _webDriver.FindElement(_composeEmailButton).Click();
-            return this;
+            return new(_webDriver);
         }
 
-        public MainPageObject EnterAddressTo(string address)
+        public bool IsAuthorized(string login)
         {
-            _webDriver.FindElement(_addressToInput).SendKeys(address);
-            return this;
+            By authLabel = By.XPath("//span[text()='" + login + "']");
+            WaitHelper.WaitElement(_webDriver, authLabel);
+            return _webDriver.FindElements(authLabel).Any();
         }
-
-        public MainPageObject EnterSubject(string subject)
-        {
-            _webDriver.FindElement(_subjectInput).SendKeys(subject);
-            return this;
-        }
-
-        public MainPageObject EnterEmailText(string text)
-        {
-            _webDriver.FindElement(_emailEditor).SendKeys(text);
-            return this;
-        }
-
     }
 }

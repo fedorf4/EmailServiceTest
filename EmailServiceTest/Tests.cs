@@ -7,8 +7,24 @@ namespace EmailServiceTest
         public void AuthorizeTest()
         {
             AuthorizationPageObject authPage = new(_webDriver);
-            authPage.Authorize(TestSettings.Login, TestSettings.Password);
-
+            MainPageObject mainPage = authPage.Authorize(TestSettings.Login, TestSettings.Password);
+            Assert.IsTrue(mainPage.IsAuthorized(TestSettings.Login));
         }
+
+        [Test]
+        public void SendEmailTest()
+        {
+            AuthorizationPageObject authPage = new(_webDriver);
+            bool isSent = authPage
+                .Authorize(TestSettings.Login, TestSettings.Password)
+                .StartComposeEmail()
+                .EnterAddressTo(TestSettings.Login)
+                .EnterSubject("Test email: " + DateTime.Now)
+                .EnterEmailText("Test text")
+                .SendEmail()
+                .IsEmailSent();
+            Assert.IsTrue(isSent);
+        }
+
     }
 }

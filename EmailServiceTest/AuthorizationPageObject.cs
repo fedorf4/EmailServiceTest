@@ -21,16 +21,15 @@ namespace EmailServiceTest
             _webDriver = webDriver;
         }
 
-        public void Authorize(string login, string password)
+        public MainPageObject Authorize(string login, string password)
         {
-            Thread.Sleep(2000);
+            WaitHelper.WaitElement(_webDriver, _loginInput);
             _webDriver.FindElement(_loginInput).SendKeys(login);
-            Thread.Sleep(2000);
             _webDriver.FindElement(_toEnterPasswordButton).Click();
-            Thread.Sleep(2000);
+            WaitHelper.WaitElement(_webDriver, _passwordInput);
             _webDriver.FindElement(_passwordInput).SendKeys(password);
-            Thread.Sleep(2000);
             _webDriver.FindElement(_signInButton).Click();
+            return new MainPageObject(_webDriver);
         }
     }
 }
