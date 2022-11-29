@@ -1,15 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace EmailServiceTest
 {
     internal static class TestSettings
     {
-        public static string HostPrefix = "https://www.e.mail.ru/";
-        public static string Login = "test-email2000@mail.ru";
-        public static string Password = PASSWORD;
+        private static readonly IConfiguration _config;
+
+        static TestSettings()
+        {
+            string projPath = new DirectoryInfo(Directory.GetCurrentDirectory())
+                !.Parent
+                !.Parent
+                !.Parent
+                !.FullName;
+
+            _config = new ConfigurationBuilder()
+                        .SetBasePath(projPath)
+                        .AddJsonFile("config.json", optional: false, reloadOnChange: true)
+                        .AddUserSecrets<BaseTest>()
+                        .Build();
+        }
+
+        public static string HostPrefix => _config["host-prefix"];
+        public static string Login => _config["e-mail-login"];
+        public static string Password => _config["e-mail-password"];
     }
 }
