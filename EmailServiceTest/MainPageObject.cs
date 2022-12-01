@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 namespace EmailServiceTest
 {
@@ -12,13 +13,17 @@ namespace EmailServiceTest
         {
             _webDriver = webDriver;
         }
-
+        
         public ComposePageObject StartComposeEmail()
         {
-            Thread.Sleep(1000); // need to close pop-up window
+            Thread.Sleep(5600); // need to close pop-up window
+            var closeLeftUpBtns = _webDriver.FindElements(By.ClassName("ph-project-promo-close-icon__container"));
+            if(closeLeftUpBtns.Any())
+                closeLeftUpBtns.First().Click();
+
             WaitHelper.WaitElement(_webDriver, _composeEmailButton);
             _webDriver.FindElement(_composeEmailButton).Click();
-            return new(_webDriver);
+            return new ComposePageObject(_webDriver);
         }
 
         public bool IsAuthorized(string login)
