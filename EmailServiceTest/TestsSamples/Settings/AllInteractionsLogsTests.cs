@@ -27,8 +27,10 @@
             Thread.Sleep(3000);
             _webDriver.SwitchTo().Window(_webDriver.WindowHandles[1]);
             var logsPage = allSettingsPage.GoToLogInteractions();
+            Thread.Sleep(1600);
 
             var logsBodies = logsPage.GetLogsRowBodies("письмо").Concat(logsPage.GetLogsRowBodies("писем"));
+            Thread.Sleep(500);
             Assert.True(logsBodies.Any(lb => lb.Contains("Отправлено")));
         }
     }

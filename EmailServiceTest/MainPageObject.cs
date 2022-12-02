@@ -39,7 +39,7 @@ namespace EmailServiceTest
 
         public ComposePageObject StartComposeEmail()
         {
-            Thread.Sleep(5600); // need to close pop-up window
+            Thread.Sleep(3600); // need to close pop-up window
             var closeLeftUpBtns = _webDriver.FindElements(By.ClassName("ph-project-promo-close-icon__container"));
             if (closeLeftUpBtns.Any())
                 closeLeftUpBtns.First().Click();
