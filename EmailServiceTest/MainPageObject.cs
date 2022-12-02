@@ -8,9 +8,13 @@ namespace EmailServiceTest
     {
         private IWebDriver _webDriver;
 
+
         private static readonly By _composeEmailButton = By.XPath("//a[@href='/compose/']");
         private static readonly By _settingsButton = By.XPath(".//span[@class='button2__wrapper']//div[@class='button2__txt' and text()='Настройки']");
         private static readonly By _allSettingsLink = By.XPath(".//a[@href='https://e.mail.ru/settings/?octaviusMode=1']");
+        private readonly By _startAddFolderButton = By.XPath("//div[text()='Новая папка']");
+        private readonly By _folderNameInput = By.XPath("//input[@name='name']");
+        private readonly By _submitAddFolderButton = By.XPath("//button[@data-test-id='submit']");
 
         public MainPageObject(IWebDriver webDriver)
         {
@@ -54,6 +58,39 @@ namespace EmailServiceTest
                 .NavigateAndClick(_webDriver);
 
             return new AllSettingsPageObject(_webDriver);
+        }
+
+        public MainPageObject AddFolder(string name)
+        {
+            WaitHelper.WaitElement(_webDriver, _startAddFolderButton);
+            _webDriver.FindElement(_startAddFolderButton).Click();
+            WaitHelper.WaitElement(_webDriver, _folderNameInput);
+            _webDriver.FindElement(_folderNameInput).SendKeys(name);
+            _webDriver.FindElement(_submitAddFolderButton).Click();
+            return this;
+        }
+
+        public MainPageObject DeleteFolder(string name)
+        {
+            By folderXPath = By.XPath($"//*[text()='{name}']");
+            WaitHelper.WaitElement(_webDriver, folderXPath);
+            IWebElement folder = _webDriver.FindElement(folderXPath);
+            new Actions(_webDriver)
+                .ContextClick(folder)
+                .Perform();
+            Thread.Sleep(1000);
+            _webDriver.FindElement(By.XPath("//*[text()='Удалить папку']")).Click();
+            Thread.Sleep(1000);
+            _webDriver.FindElement(By.XPath("//*[text()='Удалить']")).Click();
+            Thread.Sleep(1000);
+            return this;
+        }
+
+        public bool IsFolderExist(string name)
+        {
+            Thread.Sleep(500);
+            By folder = By.XPath("//a[@title='" + name + ", нет писем']");
+            return _webDriver.FindElements(folder).Any();
         }
 
         public bool IsAuthorized(string login)

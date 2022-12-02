@@ -25,5 +25,17 @@ namespace EmailServiceTest
                 .IsEmailSent();
             Assert.IsTrue(isSent);
         }
+
+        [Test]
+        public void AddFolderTest()
+        {
+            AuthorizationPageObject authPage = new(_webDriver);
+            MainPageObject mainPage = authPage.Authorize(TestSettings.Login, TestSettings.Password);
+            string name = "Test Folder" + DateTime.Now;
+            mainPage.AddFolder(name);
+            Assert.IsTrue(mainPage.IsFolderExist(name));
+            mainPage.DeleteFolder(name);
+            Assert.IsFalse(mainPage.IsFolderExist(name));
+        }
     }
 }
