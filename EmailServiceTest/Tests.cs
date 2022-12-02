@@ -25,6 +25,5 @@ namespace EmailServiceTest
                 .IsEmailSent();
             Assert.IsTrue(isSent);
         }
-
     }
 }
