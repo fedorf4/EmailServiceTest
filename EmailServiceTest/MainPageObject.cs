@@ -122,5 +122,18 @@ namespace EmailServiceTest
 
         public bool IsCompactModeEnabled()
             => _webDriver.FindElement(By.XPath("/html/body")).GetAttribute("class").Contains("g-pony-mode");
+
+        public MainPageObject SwitchSmartSorting(string name)
+        {
+            OpenSettings();
+            _webDriver.FindElement(By.XPath(".//span[text()='Умная сортировка']")).NavigateAndClick(_webDriver);
+            var xpath = By.XPath(".//small[text()='Госписьма']//following::div");
+            WaitHelper.WaitElement(_webDriver, xpath);
+            _webDriver.FindElement(xpath).Click();
+            return this;
+        }
+
+        public bool HasFolder(string name)
+            => _webDriver.FindElements(By.XPath($".//div[@class='nav__folder-name__txt' and text() = '{name}']")).Any();
     }
 }

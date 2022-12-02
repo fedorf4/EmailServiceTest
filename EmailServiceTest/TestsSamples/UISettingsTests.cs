@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 namespace EmailServiceTest.TestsSamples
 {
@@ -49,6 +50,29 @@ namespace EmailServiceTest.TestsSamples
                 .ChangeCompactMode()
                 .IsCompactModeEnabled();
             Assert.IsTrue(isCompact != isCompact2);
+        }
+
+        [Test]
+        public void RemoveGosMail()
+        {
+            MainPageObject mainPage = new(_webDriver);
+            string gosFolderTitle = "Госписьма";
+
+            Thread.Sleep(1000);
+            bool hasGosFolder = mainPage.HasFolder(gosFolderTitle);
+            mainPage.SwitchSmartSorting(gosFolderTitle);
+            Thread.Sleep(3000);
+            bool hasGosFolder2 = mainPage.HasFolder(gosFolderTitle);
+            Assert.That(hasGosFolder2, Is.Not.EqualTo(hasGosFolder));
+            
+            new Actions(_webDriver)
+                .SendKeys(Keys.Escape)
+                .Perform();
+            Thread.Sleep(1000);
+            mainPage.SwitchSmartSorting(gosFolderTitle);
+            Thread.Sleep(3000);
+            hasGosFolder = mainPage.HasFolder(gosFolderTitle);
+            Assert.That(hasGosFolder, Is.Not.EqualTo(hasGosFolder2));
         }
     }
 }
