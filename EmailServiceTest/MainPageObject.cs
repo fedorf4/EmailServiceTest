@@ -110,5 +110,17 @@ namespace EmailServiceTest
 
         public bool IsDarckModeEnabled() 
             => _webDriver.FindElement(By.XPath("/html/body")).GetAttribute("class").Contains("g-dark-mode");
+
+        public MainPageObject ChangeCompactMode()
+        {
+            OpenSettings();
+            var xpath = By.XPath(".//div[contains(@data-test-id, 'ponymode')]");
+            WaitHelper.WaitElement(_webDriver, xpath);
+            _webDriver.FindElement(xpath).Click();
+            return this;
+        }
+
+        public bool IsCompactModeEnabled()
+            => _webDriver.FindElement(By.XPath("/html/body")).GetAttribute("class").Contains("g-pony-mode");
     }
 }

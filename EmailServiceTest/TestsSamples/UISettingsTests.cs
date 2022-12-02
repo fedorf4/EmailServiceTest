@@ -33,5 +33,22 @@ namespace EmailServiceTest.TestsSamples
             _webDriver.FindElement(GetThemeXpath("Классическая")).Click();
             Assert.IsFalse(mainPage.IsDarckModeEnabled());
         }
+
+        [Test]
+        public void ChangeScalingMode()
+        {
+            MainPageObject mainPage = new(_webDriver);
+            bool isCompact = mainPage.IsCompactModeEnabled();
+
+            bool isCompact2 = mainPage
+                .ChangeCompactMode()
+                .IsCompactModeEnabled();
+            Assert.IsTrue(isCompact != isCompact2);
+
+            isCompact = mainPage
+                .ChangeCompactMode()
+                .IsCompactModeEnabled();
+            Assert.IsTrue(isCompact != isCompact2);
+        }
     }
 }
