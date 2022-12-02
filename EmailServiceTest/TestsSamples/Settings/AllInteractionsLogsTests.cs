@@ -24,8 +24,6 @@
 
             var allSettingsPage = mainPage.GoToAllSettingsPage();
 
-            Thread.Sleep(3000);
-            _webDriver.SwitchTo().Window(_webDriver.WindowHandles[1]);
             var logsPage = allSettingsPage.GoToLogInteractions();
             Thread.Sleep(1600);
 

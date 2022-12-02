@@ -28,7 +28,8 @@ namespace EmailServiceTest.TestsSamples
                 Thread.Sleep(500);
             }
 
-            Assert.That(delays.Max() - delays.Min(), Is.LessThan(1000));
+            Assert.That(delays.All(t => t < 10 * 1000));
+            Assert.That(delays.Max() - delays.Min(), Is.LessThan(5000));
         }
 
     }
