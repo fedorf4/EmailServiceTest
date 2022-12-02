@@ -1,5 +1,5 @@
 ﻿using OpenQA.Selenium;
-using System.Xml.Linq;
+using OpenQA.Selenium.Interactions;
 
 namespace EmailServiceTest
 {
@@ -39,6 +39,15 @@ namespace EmailServiceTest
         public ComposePageObject SendEmail()
         {
             _webDriver.FindElement(_sendEmailButton).Click();
+            return this;
+        }
+
+        public ComposePageObject CloseSendedComposeModalWindwow()
+        {
+            new Actions(_webDriver)
+                .SendKeys(Keys.Escape)
+                .Perform();
+
             return this;
         }
 
