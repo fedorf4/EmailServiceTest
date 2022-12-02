@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System.Xml.Linq;
 
 namespace EmailServiceTest
 {
@@ -46,6 +47,14 @@ namespace EmailServiceTest
             By sentLabel = By.XPath("//a[text()='Письмо отправлено']");
             WaitHelper.WaitElement(_webDriver, sentLabel);
             return _webDriver.FindElements(sentLabel).Any();
+        }
+
+        public bool IsSignatureExist(string signature)
+        {
+            WaitHelper.WaitElement(_webDriver, _addressToInput);
+            _webDriver.FindElement(By.XPath("//span[text()='Подпись']")).Click();
+            var signatures = _webDriver.FindElements(By.XPath($"//div[text()='{signature}']"));
+            return signatures.Any();
         }
     }
 }
