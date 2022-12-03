@@ -12,9 +12,9 @@ namespace EmailServiceTest
         private static readonly By _composeEmailButton = By.XPath("//a[@href='/compose/']");
         private static readonly By _settingsButton = By.XPath(".//span[@class='button2__wrapper']//div[@class='button2__txt' and text()='Настройки']");
         private static readonly By _allSettingsLink = By.XPath(".//a[@href='https://e.mail.ru/settings/?octaviusMode=1']");
-        private readonly By _startAddFolderButton = By.XPath("//div[text()='Новая папка']");
-        private readonly By _folderNameInput = By.XPath("//input[@name='name']");
-        private readonly By _submitAddFolderButton = By.XPath("//button[@data-test-id='submit']");
+        private static readonly By _startAddFolderButton = By.XPath("//div[text()='Новая папка']");
+        private static readonly By _folderNameInput = By.XPath("//input[@name='name']");
+        private static readonly By _submitAddFolderButton = By.XPath("//button[@data-test-id='submit']");
         private readonly By _settingsButton = By.ClassName("settings");
         private readonly By _allSettingsButton = By.XPath("//span[text()='Все настройки']");
 
@@ -49,6 +49,14 @@ namespace EmailServiceTest
             WaitHelper.WaitElement(_webDriver, _composeEmailButton);
             _webDriver.FindElement(_composeEmailButton).Click();
             return new ComposePageObject(_webDriver);
+        }
+
+        public MainPageObject OpenSettings()
+        {
+            WaitHelper.WaitElement(_webDriver, _settingsButton);
+            _webDriver.FindElement(_settingsButton)
+                .NavigateAndClick(_webDriver);
+            return this;
         }
 
         public AllSettingsPageObject GoToAllSettingsPage()
@@ -110,5 +118,33 @@ namespace EmailServiceTest
             WaitHelper.WaitElement(_webDriver, authLabel);
             return _webDriver.FindElements(authLabel).Any();
         }
+
+        public bool IsDarckModeEnabled() 
+            => _webDriver.FindElement(By.XPath("/html/body")).GetAttribute("class").Contains("g-dark-mode");
+
+        public MainPageObject ChangeCompactMode()
+        {
+            OpenSettings();
+            var xpath = By.XPath(".//div[contains(@data-test-id, 'ponymode')]");
+            WaitHelper.WaitElement(_webDriver, xpath);
+            _webDriver.FindElement(xpath).Click();
+            return this;
+        }
+
+        public bool IsCompactModeEnabled()
+            => _webDriver.FindElement(By.XPath("/html/body")).GetAttribute("class").Contains("g-pony-mode");
+
+        public MainPageObject SwitchSmartSorting(string name)
+        {
+            OpenSettings();
+            _webDriver.FindElement(By.XPath(".//span[text()='Умная сортировка']")).NavigateAndClick(_webDriver);
+            var xpath = By.XPath(".//small[text()='Госписьма']//following::div");
+            WaitHelper.WaitElement(_webDriver, xpath);
+            _webDriver.FindElement(xpath).Click();
+            return this;
+        }
+
+        public bool HasFolder(string name)
+            => _webDriver.FindElements(By.XPath($".//div[@class='nav__folder-name__txt' and text() = '{name}']")).Any();
     }
 }
