@@ -15,6 +15,8 @@ namespace EmailServiceTest
         private static readonly By _startAddFolderButton = By.XPath("//div[text()='Новая папка']");
         private static readonly By _folderNameInput = By.XPath("//input[@name='name']");
         private static readonly By _submitAddFolderButton = By.XPath("//button[@data-test-id='submit']");
+        private readonly By _settingsButton = By.ClassName("settings");
+        private readonly By _allSettingsButton = By.XPath("//span[text()='Все настройки']");
 
         public MainPageObject(IWebDriver webDriver)
         {
@@ -92,6 +94,15 @@ namespace EmailServiceTest
             _webDriver.FindElement(By.XPath("//*[text()='Удалить']")).Click();
             Thread.Sleep(1000);
             return this;
+        }
+
+        public SettingsPageObject OpenAllSettings()
+        {
+            WaitHelper.WaitElement(_webDriver, _settingsButton);
+            _webDriver.FindElement(_settingsButton).Click();
+            WaitHelper.WaitElement(_webDriver, _allSettingsButton);
+            _webDriver.FindElement(_allSettingsButton).Click();
+            return new SettingsPageObject(_webDriver);
         }
 
         public bool IsFolderExist(string name)
