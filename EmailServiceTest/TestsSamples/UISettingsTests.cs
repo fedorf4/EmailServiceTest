@@ -23,6 +23,7 @@ namespace EmailServiceTest.TestsSamples
             MainPageObject mainPage = new(_webDriver);
             mainPage.OpenSettings();
             _webDriver.FindElement(GetThemeXpath("Тёмная тема")).Click();
+            Thread.Sleep(2000);
             Assert.IsTrue(mainPage.IsDarckModeEnabled());
         }
 
@@ -32,6 +33,7 @@ namespace EmailServiceTest.TestsSamples
             MainPageObject mainPage = new(_webDriver);
             mainPage.OpenSettings();
             _webDriver.FindElement(GetThemeXpath("Классическая")).Click();
+            Thread.Sleep(2000);
             Assert.IsFalse(mainPage.IsDarckModeEnabled());
         }
 

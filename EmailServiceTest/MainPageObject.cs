@@ -15,7 +15,7 @@ namespace EmailServiceTest
         private static readonly By _startAddFolderButton = By.XPath("//div[text()='Новая папка']");
         private static readonly By _folderNameInput = By.XPath("//input[@name='name']");
         private static readonly By _submitAddFolderButton = By.XPath("//button[@data-test-id='submit']");
-        private readonly By _settingsButton = By.ClassName("settings");
+        //private readonly By _settingsButton = By.ClassName("settings");
         private readonly By _allSettingsButton = By.XPath("//span[text()='Все настройки']");
 
         public MainPageObject(IWebDriver webDriver)
@@ -44,7 +44,7 @@ namespace EmailServiceTest
             Thread.Sleep(3600); // need to close pop-up window
             var closeLeftUpBtns = _webDriver.FindElements(By.ClassName("ph-project-promo-close-icon__container"));
             if (closeLeftUpBtns.Any())
-                closeLeftUpBtns.First().Click();
+                closeLeftUpBtns.First().NavigateAndClick(_webDriver);
 
             WaitHelper.WaitElement(_webDriver, _composeEmailButton);
             _webDriver.FindElement(_composeEmailButton).Click();
