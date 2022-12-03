@@ -61,11 +61,15 @@ namespace EmailServiceTest
 
         public AllSettingsPageObject GoToAllSettingsPage()
         {
+            WaitHelper.WaitElement(_webDriver, _settingsButton);
             _webDriver.FindElement(_settingsButton)
                 .NavigateAndClick(_webDriver);
 
             _webDriver.FindElement(_allSettingsLink)
                 .NavigateAndClick(_webDriver);
+
+            Thread.Sleep(3000);
+            _webDriver.SwitchTo().Window(_webDriver.WindowHandles[1]);
 
             return new AllSettingsPageObject(_webDriver);
         }
