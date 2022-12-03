@@ -6,7 +6,7 @@ namespace EmailServiceTest.TestsSamples
     internal sealed class UIPerformanceTests : BaseTest
     {
 
-        private void AsserDelaysMultipleStart(int cnt, Action<MainPageObject, int> func, long maxTime)
+        private void AssertDelaysMultipleStart(int cnt, Action<MainPageObject, int> func, long maxTime)
         {
             if (func is null)
                 throw new ArgumentNullException(nameof(func));
@@ -29,7 +29,7 @@ namespace EmailServiceTest.TestsSamples
                 DoBeforeEachTest();
             }
             Assert.That(delays.All(t => t < maxTime));
-            Assert.That(delays.Max() - delays.Min(), Is.LessThan(1000));
+            Assert.That(delays.Max() - delays.Min(), Is.LessThan(3000));
         }
 
 
@@ -37,7 +37,7 @@ namespace EmailServiceTest.TestsSamples
         public void FromLogInToCompose()
         {
 
-            AsserDelaysMultipleStart(5, (mainPage, i) => mainPage.SendMailAndClose(
+            AssertDelaysMultipleStart(5, (mainPage, i) => mainPage.SendMailAndClose(
                     recipientEmail: TestSettings.Login,
                     text: $"Hi-{i}",
                     subject: $"UI-performance - {i}"
@@ -50,7 +50,7 @@ namespace EmailServiceTest.TestsSamples
         public void GoToLogsSpeedTest()
         {
 
-            AsserDelaysMultipleStart(5, 
+            AssertDelaysMultipleStart(5, 
                 (mainPage, i) => mainPage
                     .GoToAllSettingsPage()
                     .GoToLogInteractions(),
