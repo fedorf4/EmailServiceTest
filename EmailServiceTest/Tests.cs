@@ -61,7 +61,7 @@ namespace EmailServiceTest
             _webDriver.SwitchTo().Window(_webDriver.WindowHandles[1]);
             settingsPage.DeleteSignature();
             _webDriver.SwitchTo().Window(_webDriver.WindowHandles[0]);
-            _webDriver.FindElement(By.XPath("//button[@title='Закрыть']")).Click();
+            _webDriver.FindElement(By.XPath("//button[@title='Р—Р°РєСЂС‹С‚СЊ']")).Click();
             Thread.Sleep(1000);
             _webDriver.Navigate().Refresh();
             isSignatureExist = mainPage
